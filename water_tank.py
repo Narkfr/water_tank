@@ -48,7 +48,6 @@ try:
             lcd.backlight_on() if not button.value() else lcd.backlight_off()
             time.sleep_ms(500)
             distance = getDistance()
-            print(distance)
             fulfillment = (100 - distance)*10
             setMessage(lcd, 0, 1, f"Volume: {fulfillment}L    ")
             time.sleep(1)
