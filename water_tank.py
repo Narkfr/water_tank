@@ -22,14 +22,14 @@ def getDistance():
         pass
     pingStop = time.ticks_us()
     distanceTime = time.ticks_diff(pingStop, pingStart) // 2
-    distance = int(soundVelocity * distanceTime // 10000)
+    distance = float(soundVelocity * distanceTime // 10000)
     return distance
 
 
 def showDistance(distance, lcd):
     if distance:
         fulfillment = (100 - distance)*10
-        setMessage(lcd, 0, 1, f"Volume: {fulfillment}L    ")
+        setMessage(lcd, 0, 1, f"Volume: {round(fulfillment, 1)}L   ")
     else:
         setMessage(lcd, 0, 1, "ERROR")
 
@@ -48,7 +48,6 @@ try:
             lcd.backlight_on() if not button.value() else lcd.backlight_off()
             time.sleep_ms(500)
             distance = getDistance()
-            print(distance)
             fulfillment = (100 - distance)*10
             setMessage(lcd, 0, 1, f"Volume: {fulfillment}L    ")
             time.sleep(1)
