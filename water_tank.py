@@ -22,14 +22,15 @@ def getDistance():
         pass
     pingStop = time.ticks_us()
     distanceTime = time.ticks_diff(pingStop, pingStart) // 2
-    distance = float(soundVelocity * distanceTime // 10000)
+    distance = int(soundVelocity * distanceTime // 10000)
     return distance
 
 
 def showDistance(distance, lcd):
-    if distance:
-        fulfillment = (100 - distance)*10
-        setMessage(lcd, 0, 1, f"Volume: {round(fulfillment, 1)}L   ")
+    # todo: set water tank dimension in a setting file. Works because my tank is a one meter cube.
+    if distance and 1 <= distance <= 99:
+        fulfillment = (100 - distance)
+        setMessage(lcd, 0, 1, f"Volume: {fulfillment}%   ")
     else:
         setMessage(lcd, 0, 1, "ERROR")
 
@@ -48,13 +49,11 @@ try:
             lcd.backlight_on() if not button.value() else lcd.backlight_off()
             time.sleep_ms(500)
             distance = getDistance()
-            fulfillment = (100 - distance)*10
-            setMessage(lcd, 0, 1, f"Volume: {fulfillment}L    ")
+            showDistance(distance, lcd)
             time.sleep(1)
 
     else:
         print("No address found")
 except:
     pass
-
 
